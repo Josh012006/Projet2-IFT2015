@@ -38,6 +38,7 @@ src/
    ├── Sim.java               # Classe de gestion de la simulation (création des events)
    ├── Event.java             # Représentation d’un événement individuel
    ├── Simulation.java        # Boucle principale et échantillonnage (§2.2)
+   ├── PQComparator           # Une implémentation du Comparator pour la PriorityQueue des Events
    ├── Coalescence.java       # Algorithme de remontée des lignées (§2.3)
    └── Main.java              # Lance la simulation et gère la CLI (§2.4)
 report/
