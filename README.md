@@ -37,7 +37,6 @@ src/
    ├── AgeModel.java          # Modèle de génération de durées de vie aléatoires
    ├── Sim.java               # Classe de gestion de la simulation (création des events)
    ├── Event.java             # Représentation d’un événement individuel
-   ├── PriorityQueue.java     # Tas binaire générique pour ordonnancement
    ├── Simulation.java        # Boucle principale et échantillonnage (§2.2)
    ├── Coalescence.java       # Algorithme de remontée des lignées (§2.3)
    └── Main.java              # Lance la simulation et gère la CLI (§2.4)
