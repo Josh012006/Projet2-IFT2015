@@ -47,7 +47,7 @@ public class Coalescence {
 
     public void start() {
         // Premier essai d'éciture de logique avec les hommes
-        for() {
+        while (!allFounders(PA)) {
 
         }
     }
@@ -63,5 +63,7 @@ public class Coalescence {
 
         return true;
     }
+
+    private boo
 
 }
