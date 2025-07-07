@@ -16,8 +16,6 @@ public class Simulation {
     private final ArrayList<Sim> livingSims;
 
     private double currentTime = 0;
-    private int maleCount = 0;
-    private int femaleCount = 0;
 
     /**
      * @param reproductionRateNumerator rate for exponential waiting times
@@ -32,10 +30,6 @@ public class Simulation {
         this.livingSims = new ArrayList<>();
     }
 
-    //Live male countA
-    public int getMaleCount() { return maleCount; }
-    //Live female count
-    public int getFemaleCount() { return femaleCount; }
     // The current time of the simulation
     public double getCurrentTime() { return currentTime; }
     // Getting the current population
@@ -101,15 +95,11 @@ public class Simulation {
 
         // add to population and update gender counts
         livingSims.add(x);
-        if (x.getSex() == Sim.Sex.M) maleCount++;
-        else                   femaleCount++;
     }
 
     private void processDeath(Event e) {
         Sim x = e.getSubject();
         livingSims.remove(x);
-        if (x.getSex() == Sim.Sex.M) maleCount--;
-        else                   femaleCount--;
     }
 
     private void processReproduction(Event e) {

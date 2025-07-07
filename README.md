@@ -3,7 +3,7 @@
 ## Aperçu
 
 <div align="center">
-    <img src="test/coalescence_population.png" alt="Évolution de la taille de la population et des lignées" />
+    <img src="test/graphes_population.png" alt="Évolution de la taille de la population et des lignées" />
 </div>
 
 ## Description

@@ -23,8 +23,8 @@ public class Coalescence {
 
         @Override
         public int compare(Sim o1, Sim o2) {
-            return Double.compare(o1.getBirthTime(), o2.getBirthTime());
-        }
+            return -1 * Double.compare(o1.getBirthTime(), o2.getBirthTime());
+        }// Multiplier par -1 pour avoir un max-tas
     }
 
 
@@ -46,16 +46,18 @@ public class Coalescence {
         final ArrayList<Pair<Double, Integer>> results = new ArrayList<>();
 
         double p = this.simulation.getCurrentTime();
-        int males = this.simulation.getMaleCount();
 
         // Etat initial avant le lancement des opérations
         for (Sim sim : this.simulation.getPopulation()) {
             if(sim.getSex() == Sim.Sex.M) {
                 PA.add(sim);
                 PASet.add(sim);
-                results.add(new Pair<>(p, males));
             }
         }
+
+
+
+        results.add(new Pair<>(p, PA.size()));
 
 
         // Lancement de la boucle
@@ -76,9 +78,8 @@ public class Coalescence {
                         PA.add(father);
                     } else {
                         n--;
+                        results.add(new Pair<>(t, n));
                     }
-
-                    results.add(new Pair<>(t, n));
                 }
             }
 
@@ -98,16 +99,16 @@ public class Coalescence {
         final ArrayList<Pair<Double, Integer>> results = new ArrayList<>();
 
         double p = this.simulation.getCurrentTime();
-        int females = this.simulation.getFemaleCount();
 
         // Etat initial avant le lancement des opérations
         for (Sim sim : this.simulation.getPopulation()) {
             if(sim.getSex() == Sim.Sex.F) {
                 MA.add(sim);
                 MASet.add(sim);
-                results.add(new Pair<>(p, females));
             }
         }
+
+        results.add(new Pair<>(p, MA.size()));
 
 
         // Lancement de la boucle
@@ -127,9 +128,9 @@ public class Coalescence {
                     MA.add(mother);
                 } else {
                     n--;
+                    results.add(new Pair<>(t, n));
                 }
 
-                results.add(new Pair<>(t, n));
             }
 
         }

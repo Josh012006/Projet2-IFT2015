@@ -6,6 +6,7 @@ public class Main {
         int n = Integer.parseInt(args[0]);
         double tMax = Double.parseDouble(args[1]);
 
+
         Simulation simulation = new Simulation(2.0, 0.9);
         simulation.simulate(n, tMax);
 
