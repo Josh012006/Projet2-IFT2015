@@ -2,8 +2,14 @@
 
 ## Aperçu
 
-<div align="center">
-    <img src="test/graphes_population.png" alt="Évolution de la taille de la population et des lignées" />
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img width="900" src="test/graphes_population1.png" alt="Évolution de la taille de la population et des lignées simulation1" />
+    <span>Première simulation</span>
+</div>
+<br />
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img width="900" src="test/graphes_population2.png" alt="Évolution de la taille de la population et des lignées simulation2" />
+    <span>Deuxième simulation</span>
 </div>
 
 ## Description
@@ -61,7 +67,7 @@ java -jar coalescence-1.0.jar <n> <tMax> > sortie.csv
 ### Exemple
 
 ```bash
-java -jar coalescence.jar 1000 10000 > sortie.csv
+java -jar coalescence-1.0.jar 1000 10000 > sortie.csv
 ```
 
 ## Structure du dépôt GitHub

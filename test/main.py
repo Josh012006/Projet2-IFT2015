@@ -1,7 +1,5 @@
-# Script pour générer les graphes
-
 import matplotlib
-matplotlib.use('TkAgg')  # Pour éviter le bug avec le backend InterAgg de PyCharm
+matplotlib.use('TkAgg')
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,33 +20,32 @@ for start, end in zip(section_indices, section_ends):
     df = pd.read_csv(StringIO("".join(section)))
     dataframes.append(df)
 
-# Assigner les noms pour plus de clarté
 population_df, aieux_df, aieules_df = dataframes
 
-# Tracer les trois graphes
-plt.figure(figsize=(15, 10))
+# Tracer un seul graphe avec toutes les courbes
+plt.figure(figsize=(12, 7))
 
-# Population
-plt.subplot(3, 1, 1)
-plt.plot(population_df['Temps'], population_df['Taille de la population'], color='blue')
-plt.title("Taille de la population au cours du temps")
-plt.xlabel("Temps")
-plt.ylabel("Population")
+# Courbe 1 : Population (ligne simple)
+plt.plot(population_df['Temps'], population_df['Taille de la population'],
+         color='steelblue', linestyle='-', label="taille de la population")
 
-# Aieux
-plt.subplot(3, 1, 2)
-plt.plot(aieux_df['Temps'], aieux_df['Aieux'], color='green')
-plt.title("Nombre d'aieux au cours du temps")
-plt.xlabel("Temps")
-plt.ylabel("Aieux")
+# Courbe 2 : Aieules (lignes + carrés)
+plt.plot(aieules_df['Temps'], aieules_df['Aieules'],
+         color='brown', marker='s', linestyle='-', markersize=5, label="aïeules")
 
-# Aieules
-plt.subplot(3, 1, 3)
-plt.plot(aieules_df['Temps'], aieules_df['Aieules'], color='purple')
-plt.title("Nombre d'aieules au cours du temps")
-plt.xlabel("Temps")
-plt.ylabel("Aieules")
+# Courbe 3 : Aieux (lignes + carrés)
+plt.plot(aieux_df['Temps'], aieux_df['Aieux'],
+         color='olive', marker='s', linestyle='-', markersize=5, label="aïeux")
 
+# Log scale Y si besoin
+plt.yscale('log')
+
+# Titre et légendes
+plt.xlabel("(1000 ans)", fontsize=12, fontweight='bold')
+plt.legend()
+plt.grid(True, which="both", linestyle="--", alpha=0.5)
+
+# Ajustement des marges
 plt.tight_layout()
 
 # Sauvegarde dans un fichier image
