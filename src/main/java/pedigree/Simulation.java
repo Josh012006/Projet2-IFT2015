@@ -1,41 +1,39 @@
 // File: Simulation.java
 package pedigree;
 
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 
 
 public class Simulation {
-    private final AgeModel ageModel;
+    private final AgeModel ageModel = new AgeModel();
     private final double reproductionRate;
     private final double fidelity;
     private final Random rnd;
-    private final PQ<Event> eventQ;
-    private final List<Sim> livingSims;
+    private final PriorityQueue<Event> eventQ;
+    private final ArrayList<Sim> livingSims;
 
-    private int maleCount = 0;
-    private int femaleCount = 0;
+    private double currentTime = 0;
 
     /**
-     * @param ageModel        Gompertz-Makeham age model
-     * @param reproductionRate rate for exponential waiting times
-     * @param fidelity        probability a mother stays with the same partner
+     * @param reproductionRateNumerator rate for exponential waiting times
+     * @param fidelity                  probability a mother stays with the same partner
      */
 
-    public Simulation(AgeModel ageModel, double reproductionRate, double fidelity) {
-        this.ageModel = ageModel;
-        this.reproductionRate = reproductionRate;
+    public Simulation(double reproductionRateNumerator, double fidelity) {
+        this.reproductionRate = reproductionRateNumerator / ageModel.expectedParenthoodSpan(Sim.MIN_MATING_AGE_F, Sim.MAX_MATING_AGE_F);
         this.fidelity = fidelity;
         this.rnd = new Random();
-        this.eventQ = new PQ<>(new PQComparator<>());
+        this.eventQ = new PriorityQueue<Event>();
         this.livingSims = new ArrayList<>();
     }
 
-    //Live male countA
-    public int getMaleCount() { return maleCount; }
-    //Live female count
-    public int getFemaleCount() { return femaleCount; }
+    // The current time of the simulation
+    public double getCurrentTime() { return currentTime; }
+    // Getting the current population
+    public ArrayList<Sim> getPopulation() { return livingSims; }
 
     //Run the simulation starting with n founders up to time tMax.
 
@@ -44,29 +42,41 @@ public class Simulation {
         for (int i = 0; i < n; i++) {
             Sim.Sex sex = rnd.nextBoolean() ? Sim.Sex.M : Sim.Sex.F;
             Sim founder = new Sim(sex);
-            eventQ.insert(new Event(founder, Event.Type.BIRTH, 0.0));
+            eventQ.add(new Event(founder, Event.Type.BIRTH, 0.0));
         }
 
+        double step = 0;
+
+        System.out.println("Temps,Taille de la population");
         // main event loop
         while (!eventQ.isEmpty()) {
-            Event e = eventQ.deleteMin();
-            double currentTime = e.getTime();
+            Event e = eventQ.poll();
+            currentTime = e.getTime();
+
+            if(currentTime >= step) {
+                System.out.println(currentTime + "," + livingSims.size());
+                step += 100;
+            }
+
             if (currentTime > tMax) break;
+
             Sim subject = e.getSubject();
             if (currentTime < subject.getDeathTime()) {
                 switch (e.getType()) {
                     case BIRTH:
                         processBirth(e);
                         break;
-                    case DEATH:
-                        processDeath(e);
-                        break;
                     case REPRODUCTION:
                         processReproduction(e);
                         break;
                 }
+            } else {
+                if(e.getType() == Event.Type.DEATH) {
+                    processDeath(e);
+                }
             }
         }
+
     }
 
     private void processBirth(Event e) {
@@ -75,25 +85,21 @@ public class Simulation {
         // schedule death
         double life = ageModel.randomAge(rnd);
         x.setDeathTime(t + life);
-        eventQ.insert(new Event(x, Event.Type.DEATH, t + life));
+        eventQ.add(new Event(x, Event.Type.DEATH, t + life));
 
         // schedule reproduction if female
         if (x.getSex() == Sim.Sex.F) {
             double wait = AgeModel.randomWaitingTime(rnd, reproductionRate);
-            eventQ.insert(new Event(x, Event.Type.REPRODUCTION, t + wait));
+            eventQ.add(new Event(x, Event.Type.REPRODUCTION, t + wait));
         }
 
         // add to population and update gender counts
         livingSims.add(x);
-        if (x.getSex() == Sim.Sex.M) maleCount++;
-        else                   femaleCount++;
     }
 
     private void processDeath(Event e) {
         Sim x = e.getSubject();
         livingSims.remove(x);
-        if (x.getSex() == Sim.Sex.M) maleCount--;
-        else                   femaleCount--;
     }
 
     private void processReproduction(Event e) {
@@ -101,7 +107,7 @@ public class Simulation {
         double t = e.getTime();
         // always schedule next reproduction
         double wait = AgeModel.randomWaitingTime(rnd, reproductionRate);
-        eventQ.insert(new Event(mother, Event.Type.REPRODUCTION, t + wait));
+        eventQ.add(new Event(mother, Event.Type.REPRODUCTION, t + wait));
 
         if (!mother.isMatingAge(t)) return;
 
@@ -114,7 +120,7 @@ public class Simulation {
         mother.setMate(father);
         father.setMate(mother);
         // schedule child's birth handling
-        eventQ.insert(new Event(child, Event.Type.BIRTH, t));
+        eventQ.add(new Event(child, Event.Type.BIRTH, t));
     }
 
     /**

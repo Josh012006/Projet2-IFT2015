@@ -3,7 +3,7 @@
 ## Aperçu
 
 <div align="center">
-    <img src="test/coalescence_population.png" alt="Évolution de la taille de la population et des lignées" />
+    <img src="test/graphes_population.png" alt="Évolution de la taille de la population et des lignées" />
 </div>
 
 ## Description
@@ -38,7 +38,6 @@ src/
    ├── Sim.java               # Classe de gestion de la simulation (création des events)
    ├── Event.java             # Représentation d’un événement individuel
    ├── Simulation.java        # Boucle principale et échantillonnage (§2.2)
-   ├── PQComparator           # Une implémentation du Comparator pour la PriorityQueue des Events
    ├── Coalescence.java       # Algorithme de remontée des lignées (§2.3)
    └── Main.java              # Lance la simulation et gère la CLI (§2.4)
 report/
@@ -52,7 +51,7 @@ README.md                   # Ce fichier
 Le JAR exécutable `coalescence.jar` prend en arguments :
 
 ```bash
-java -jar coalescence.jar <n> <tMax> > sortie.csv
+java -jar coalescence-1.0.jar <n> <tMax> > sortie.csv
 ```
 
 * `<n>` : nombre de fondateurs (entier)
@@ -62,7 +61,7 @@ java -jar coalescence.jar <n> <tMax> > sortie.csv
 ### Exemple
 
 ```bash
-java -jar coalescence.jar 1000 10000 > resultats_1000_10000.csv
+java -jar coalescence.jar 1000 10000 > resultats.csv
 ```
 
 ## Structure du dépôt GitHub
