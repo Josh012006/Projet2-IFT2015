@@ -12,6 +12,11 @@ public class Coalescence {
             this.first = first;
             this.second = second;
         }
+
+        @Override
+        public String toString() {
+            return first + "," + second;
+        }
     }
 
     private static class MyComparator implements Comparator<Sim> {
@@ -40,15 +45,15 @@ public class Coalescence {
         // Voir ce qu'on fera avec après
         final ArrayList<Pair<Double, Integer>> results = new ArrayList<>();
 
-        double p = this.simulation.getActualTime();
-        int males = this.simulation.getNumMales();
+        double p = this.simulation.getCurrentTime();
+        int males = this.simulation.getMaleCount();
 
         // Etat initial avant le lancement des opérations
         for (Sim sim : this.simulation.getPopulation()) {
             if(sim.getSex() == Sim.Sex.M) {
                 PA.add(sim);
                 PASet.add(sim);
-                results.add(new Pair(p, males));
+                results.add(new Pair<>(p, males));
             }
         }
 
@@ -64,10 +69,10 @@ public class Coalescence {
                     int n = PASet.size();
 
                     Sim father = youngest.getFather();
-                    PASet.add(father);       // Ne l'ajoutera pas s'il y est déjà
 
                     // Vérifier si son père est dans la liste d'allèles
                     if(!PASet.contains(father)) {
+                        PASet.add(father);       // Ne l'ajoutera pas s'il y est déjà
                         PA.add(father);
                     } else {
                         n--;
@@ -78,6 +83,11 @@ public class Coalescence {
             }
 
         }
+
+        System.out.println("Temps,Aieux");
+        for(Pair<Double, Integer> val : results) {
+            System.out.println(val);
+        }
     }
 
 
@@ -87,15 +97,15 @@ public class Coalescence {
         // Voir ce qu'on fera avec après
         final ArrayList<Pair<Double, Integer>> results = new ArrayList<>();
 
-        double p = this.simulation.getActualTime();
-        int females = this.simulation.getNumFemales();
+        double p = this.simulation.getCurrentTime();
+        int females = this.simulation.getFemaleCount();
 
         // Etat initial avant le lancement des opérations
         for (Sim sim : this.simulation.getPopulation()) {
             if(sim.getSex() == Sim.Sex.F) {
                 MA.add(sim);
                 MASet.add(sim);
-                results.add(new Pair(p, females));
+                results.add(new Pair<>(p, females));
             }
         }
 
@@ -110,10 +120,10 @@ public class Coalescence {
                 int n = MASet.size();
 
                 Sim mother = youngest.getMother();
-                MASet.add(mother);       // Ne l'ajoutera pas si elle y est déjà
 
                 // Vérifier si sa mère est dans la liste d'allèles
                 if(!MASet.contains(mother)) {
+                    MASet.add(mother);       // Ne l'ajoutera pas si elle y est déjà
                     MA.add(mother);
                 } else {
                     n--;
@@ -122,6 +132,11 @@ public class Coalescence {
                 results.add(new Pair<>(t, n));
             }
 
+        }
+
+        System.out.println("Temps,Aieules");
+        for(Pair<Double, Integer> val : results) {
+            System.out.println(val);
         }
     }
 
