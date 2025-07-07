@@ -61,7 +61,7 @@ java -jar coalescence-1.0.jar <n> <tMax> > sortie.csv
 ### Exemple
 
 ```bash
-java -jar coalescence.jar 1000 10000 > resultats.csv
+java -jar coalescence.jar 1000 10000 > sortie.csv
 ```
 
 ## Structure du dépôt GitHub
