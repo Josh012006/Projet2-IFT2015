@@ -19,35 +19,53 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>pedigree.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <!-- Plugin pour générer le jar des sources -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- Jar exécutable normal -->
+                  <plugin>
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-jar-plugin</artifactId>
+                     <version>3.4.2</version>
+                     <executions>
+                         <!-- JAR principal -->
+                         <execution>
+                             <id>default-jar</id>
+                             <goals>
+                                 <goal>jar</goal>
+                             </goals>
+                             <configuration>
+                                 <archive>
+                                     <manifest>
+                                         <addClasspath>true</addClasspath>
+                                         <classpathPrefix>lib/</classpathPrefix>
+                                         <mainClass>pedigree.Main</mainClass>
+                                     </manifest>
+                                 </archive>
+                             </configuration>
+                         </execution>
+         
+                         <!-- JAR avec sources + classes -->
+                         <execution>
+                             <id>sources-jar</id>
+                             <phase>package</phase>
+                             <goals>
+                                 <goal>jar</goal>
+                             </goals>
+                             <configuration>
+                                 <classifier>sources</classifier>
+                                 <archive>
+                                     <manifest>
+                                         <addClasspath>true</addClasspath>
+                                         <classpathPrefix>lib/</classpathPrefix>
+                                         <mainClass>pedigree.Main</mainClass>
+                                     </manifest>
+                                 </archive>
+                                 <includes>
+                                     <include>**/*.class</include>
+                                     <include>**/*.java</include>
+                                 </includes>
+                             </configuration>
+                         </execution>
+                     </executions>
+                 </plugin>
         </plugins>
 
         <pluginManagement>
